@@ -19,7 +19,7 @@ urlcolor: MidnightBlue
 
 ## Summary {#sec-summary}
 
-This is a (very) basic tutorial on how to track cells using Mastodon [@Girstmair2025] in Fiji [@Schindelin2012-di].
+This is a (very) basic tutorial on how to track cells using Mastodon [@Girstmair2025-qd] in Fiji [@Schindelin2012-di].
 
 - Objectives: load/create Mastodon dataset, get familiar with navigating BigDataViewer and lineage windows, perform basic manual cell tracking with cell divisions, basic editing of lineages, try semi-automated detection and tracking, and some advanced analysis
 - We will use the Mastodon dataset from Girstmair, J. (2024). Mastodon Auto-Tracking Demo on Parhyale hawaiensis Limb Development. Zenodo. https://doi.org/10.5281/zenodo.13944688
