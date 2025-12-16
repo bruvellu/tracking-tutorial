@@ -115,11 +115,28 @@ Note! If you are following this during the course, the dataset has already been 
 ## Open Mastodon Project {#sec-open-project}
 
 - In Fiji click on `Plugins > Tracking > Mastodon > Mastodon Launcher`
+
+![](media/13-mastodon-launch.png)
+
 - Mastodon Launcher window will open
 - Click on "open Mastodon project" (top left) and "Open another project" (bottom right)
+
+::: {layout-ncol=2}
+
+![](media/14-mastodon-window.png)
+
+![](media/15-mastodon-project.png)
+
+:::
+
 - Navigate to the directory `Mastodon_Auto-Tracking_Demo_Ph-limb-dev/`
 - Select the file `Parhyale_LimbDev_30tps.mastodon`
+
+![](media/16-mastodon-open.png)
+
 - Several new windows will open (Console, Mastodon, BigDataViewer, TrackScheme, Data table)
+
+![](media/17-mastodon-windows.png)
 
 ## Inspect the Dataset {#sec-inspect-dataset}
 
