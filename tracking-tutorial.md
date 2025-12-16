@@ -267,7 +267,7 @@ Note! If you are following this during the course, the dataset has already been 
 
 - There are many parameters that can be adjusted to tweak the semi-automated tracking behavior, check the documentation
 
-## Automatic tracking {#sec-auto-tracking}
+## Automated Tracking {#sec-auto-tracking}
 
 - The final part of this tutorial is to try automatic detection and linking of spots
 - This is the dream: loading your data and getting out your lineage. However, in practice, it’s a lot messier. Cleaning, fixing, and curating the data is required to get a nice informative lineage
@@ -275,7 +275,7 @@ Note! If you are following this during the course, the dataset has already been 
 
 ![](media/41-auto-doc.png)
 
-### Detection
+### Detection {#sec-auto-detection}
 
 - In the Mastodon window, go to `Plugins > Tracking > Detection...`
 
@@ -320,7 +320,7 @@ Note! If you are following this during the course, the dataset has already been 
 
 ![](media/50-detect-detail.png)
 
-### Cleaning
+### Cleaning {#sec-auto-cleaning}
 
 - Before we try to automatically link these spots, let's remove low quality detections
 - On the Mastodon window click on `Table`, resize it to have more space, and resize the column `Detection q...` to show `Detection quality`
@@ -345,7 +345,7 @@ Note! If you are following this during the course, the dataset has already been 
 - Close the table
 - You can also manually delete obviously wrong spots by hovering and pressing `D`. Clean up the ones outside the embryo
 
-### Linking
+### Linking {#sec-auto-linking}
 
 - Now let's try linking
 - In the main Mastodon window click on `Plugins > Tracking > Linking...`
@@ -380,28 +380,70 @@ Note! If you are following this during the course, the dataset has already been 
 
 - Mastodon can calculate features (position, displacement, velocity, etc.) of individual spots, links and branches. Let's do that
 - In the main Mastodon window press `compute features`. A Feature calculation window will open
-- Press `compute` and wait... when it's done, close it
 
 ![](media/60-compute-features.png)
+
+- Press `compute` and wait... when it's done, close it.
+- Note that now the tracks in the BigDataViewer is showing colored links 
+
+![](media/61-computed-tracks.png)
+
+- Open the table window from the main window
+- It’ll be filled with computed features
+
+![](media/62-computed-features.png)
 
 ## Basic Feature Visualization {#sec-feature-visualization}
 
 - Finally, let's visualize the computed features that might be interesting or useful
 - In the bdv window press `File > Preferences` to open the feature color coding visualization parameters
+
+![](media/63-open-settings.png)
+
 - On `Settings > Feature Color Modes` click on `Duplicate` (it'll generate a `Number of links (2)`) and then `Rename`. Rename it to `Velocity`
+
+::: {layout-ncol=2}
+
+![](media/64-colormode-settings.png)
+
+![](media/65-colormode-duplicate.png)
+
+:::
+
 - On the `Coloring Spots` change `Read spot color from` to `Incoming link` and change `Feature` to `Link velocity`. Then click on `autoscale` in the range
 - On the `Coloring Links` change `Read link color from` to `Link` and change `Feature` to `Link velocity`. Then also click on `autoscale`
 - Click `Apply` (nothing will happen) then `OK`
+
+![](media/66-colormode-params.png)
+
 - On the bdv window press `View > Coloring > Velocity`
+
+![](media/67-velocity-apply.png)
+
+- The spots and links in the BigDataViewer window will change colors
+
+![](media/68-velocity-colors.png)
+
 - Do the same for the other bdv window and the TrackScheme
+
+![](media/69-velocity-tracks.png)
+
 - This gives a visual representation of cells which have a high displacement per frame. These might be artifacts in linking unrelated spots or, in a good processed lineage, reveal some biological process like cell migration
 
 ## Graph Plotting {#sec-graph-plotting}
 
 - To finalize, a simple example of plotting
 - Click on `grapher` in the main Mastodon window, a plot window will open
+
+![](media/70-grapher-open.png)
+
 - Press the lock 1 to lock the windows, select `Link velocity - outgoing` for X axis and `Detection quality` for Y axis and press `Plot`
+
+![](media/71-grapher-plot.png)
+
 - Find out if the spots with the highest link velocity are properly linked or if it is an artifact
+
+![](media/72-grapher-analysis.png)
 
 ## References {#sec-references}
 
