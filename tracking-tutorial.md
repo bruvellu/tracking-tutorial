@@ -267,39 +267,122 @@ Note! If you are following this during the course, the dataset has already been 
 
 - There are many parameters that can be adjusted to tweak the semi-automated tracking behavior, check the documentation
 
-## Automatic Detection and Linking {#sec-auto-tracking}
+## Automatic tracking {#sec-auto-tracking}
 
 - The final part of this tutorial is to try automatic detection and linking of spots
 - This is the dream: loading your data and getting out your lineage. However, in practice, it’s a lot messier. Cleaning, fixing, and curating the data is required to get a nice informative lineage
 - We will use a simplified version of the protocol included in this dataset in the file `Protocol_Auto-Detection_Auto-Linking.docx`
+
+![](media/41-auto-doc.png)
+
+### Detection
+
 - In the Mastodon window, go to `Plugins > Tracking > Detection...`
+
+![](media/42-auto-detect.png)
+
 - Press `Next` twice (leave options as is)
+
+::: {layout-ncol=2}
+
+![](media/43-detect-info.png)
+
+![](media/44-detect-roi.png)
+
+:::
+
 - Choose `Advanced DoG detector` and press `Next`
 - Keep `Detect: bright blobs`, change `Estimated diameter` to `35px` and `Quality threshold` to `100`. `Behavior` should remain as `Add`
-- Click `Preview` and see how well the detection will work by exploring a new bdv window. Do you observe too many false positives? You can change the diameter, for example, and try the preview again to see what happens to the detected spots
+
+::: {layout-ncol=2}
+
+![](media/45-detect-dog.png)
+
+![](media/46-detect-params.png)
+
+:::
+
+- Click `Preview` and see how well the detection will work by exploring a new bdv window.
+
+![](media/47-detect-preview.png)
+
+- Do you observe too many false positives? You can change the diameter, for example, and try the preview again to see what happens to the detected spots
 - Once satisfied, press `Next` and wait
+
+![](media/48-detect-run.png)
+
 - When the detection is done, press `Finish`
-- The bdv windows and the TrackScheme will be showing all the spots. Explore a bit the bdv and TrackScheme. If you zoom in a lot you'll see the unlinked, individual spots per frame
+
+![](media/49-detect-done.png)
+
+- The bdv windows and the TrackScheme will be showing a lot of new spots.
+- Explore the spots in the BigDataViewer and TrackScheme windows. If you zoom in a lot you'll see the unlinked, individual spots per frame
+
+![](media/50-detect-detail.png)
+
+### Cleaning
+
 - Before we try to automatically link these spots, let's remove low quality detections
 - On the Mastodon window click on `Table`, resize it to have more space, and resize the column `Detection q...` to show `Detection quality`
+
+::: {layout-ncol=2}
+
+![](media/51-table-open.png)
+
+![](media/52-table-resize.png)
+
+:::
+
 - Click on `Detection quality` to sort the table
+
+![](media/53-table-sort.png)
+
 - Click on the first row to select it. Select all rows where `Detection quality` is <400
 - Then click `Edit > Delete Selection`
+
+![](media/54-table-delete.png)
+
 - Close the table
 - You can also manually delete obviously wrong spots by hovering and pressing `D`. Clean up the ones outside the embryo
+
+### Linking
+
 - Now let's try linking
 - In the main Mastodon window click on `Plugins > Tracking > Linking...`
 - Keep `All spots` selected for all timepoints (0-29) and press `Next`
 - Choose `Lap linker` and click `Next`
+
+::: {layout-ncol=2}
+
+![](media/55-link-timepoints.png)
+
+![](media/56-link-lap.png)
+
+:::
+
 - Change the parameters to:
   - `Frame to frame linking`: `Max distance` to `40px`
   - `Gap closing`: `Max distance` to `60px` (keep others as is)
   - `Track division`: Check `Allow track division`, set `Max distance` to `40px`, and press `+` to add a `Feature penalty` and set it to `Center ch1` to `0.3`
 - Press `Next` to start linking and wait... then press `Finish`
+
+::: {layout-ncol=2}
+
+![](media/57-link-params.png)
+
+![](media/58-link-finish.png)
+
+:::
+
 - Note that there are now tracks in the bdv and TrackScheme windows. Explore them a bit
+
+![](media/59-link-explore.png)
+
 - Mastodon can calculate features (position, displacement, velocity, etc.) of individual spots, links and branches. Let's do that
 - In the main Mastodon window press `compute features`. A Feature calculation window will open
 - Press `compute` and wait... when it's done, close it
+
+![](media/60-compute-features.png)
 
 ## Basic Feature Visualization {#sec-feature-visualization}
 
