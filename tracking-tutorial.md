@@ -141,43 +141,112 @@ Note! If you are following this during the course, the dataset has already been 
 ## Inspect the Dataset {#sec-inspect-dataset}
 
 - Let's focus on the Mastodon window. Close Console, BigDataViewer, TrackScheme, Data table
+
+![](media/18-mastodon-main.png)
+
 - This is the main project menu from where you can open windows, set options, process data and save the project
 - The most important buttons for this tutorial are `bdv` (BigDataViewer) and `trackscheme`
 - Click on `bdv` and make the window larger
+
+![](media/19-mastodon-bdv.png)
+
 - Drag the timepoint slider at the bottom to see cells moving and dividing
 - Using your acquired BigDataViewer skills, focus on the surface of the embryo
 - If you get lost, press `Shift+Z` to re-orient the embryo
 - Find a cell that divides before timepoint 15 and looks trackable
 - Zoom on it using `Ctrl+Shift+scroll` and center it by holding the right button and dragging the mouse
 - Use `Shift+scroll` to navigate through z and `M-N` to go through time
+
+::: {layout-ncol=2}
+
+![](media/20-nucleus-before.png)
+
+![](media/21-nucleus-after.png)
+
+:::
+
 - You are ready to track
 
 ## Manual Tracking {#sec-manual-tracking}
 
 - On the Mastodon project window, click on the `trackscheme` button
 - The TrackScheme window will appear
+
+![](media/22-trackscheme-window.png)
+
 - Resize the bdv window to be side-by-side with the TrackScheme
 - Click on the bdv window, set the timepoint to some frames before mitosis, `Shift+scroll` to find the center of the nucleus, put your mouse pointer there and press `A`
 - A round magenta circle will appear over the nucleus and in the TrackScheme
+
+![](media/23-manual-add.png)
+
 - With your mouse over the circle, use `Shift+Q` and `Shift+E` to adjust the size of the spot to roughly the nucleus diameter
+
+![](media/24-manual-resize.png)
+
 - Zoom in on the new spot in the TrackScheme, hover and click on it and watch what happens in the bdv window
+
+![](media/25-click-spot.png)
+
 - Go back to the bdv, hover the pointer over the circle and hold the spacebar to adjust the position of the circle and the nucleus
+
+![](media/26-adjust-position.png)
+
 - Now let's add a second spot
-- Hover the mouse inside the circle and hold `A`. This will advance to the next frame showing you the first spot in white dashed line and the second spot in white solid line with a white solid link between the two. Still holding `A`, position the second spot, then release `A` to create the new linked spot
+- Hover the mouse inside the circle and hold `A`. This will advance to the next frame showing you the first spot in white dashed line and the second spot in white solid line with a white solid link between the two.
+
+![](media/27-hold-a.png)
+
+- Still holding `A`, position the second spot, then release `A` to create the new linked spot
 - Check how the second spot and a link were created in the TrackScheme automatically
+
+![](media/28-release-a.png)
+
 - Continue to track the nucleus for a few more frames, until the frame immediately before division
+
 - Note that when you click on a spot in the bdv window, the corresponding spot is highlighted in the TrackScheme window
 - See what happens to the bdv when clicking the spots in TrackScheme... (nothing, unless it is the spot in view)
 - Let's change that
 - In the menu bar of bdv and TrackScheme windows there are locks 1, 2, 3. Click on lock 1 in both windows
+
+![](media/29-lock-windows.png)
+
 - Now click through spots in the TrackScheme; the view in the bdv will change to show the selected spot at the center
+
+![](media/30-locked-behavior.png)
+
 - Before we continue tracking the cell division, let's check one of the amazing Mastodon features
 - Click on the `bdv` button in the Mastodon project window and another bdv window will open
+
+![](media/31-bdv-new.png)
+
 - Now activate lock 1 and click on one of the TrackScheme spots; both windows will be synchronized!
-- Why is this useful for manual tracking? Adjust the view to center the spot in the second bdv window, press `Shift+Y`, and select a spot from the TrackScheme. Now we have both XY and ZY views of the same nucleus! Which is great for tracking in 3D. You can check, for instance, that your spot is well centered in Z and adjust it in this window
-- OK. Continue the tracking of one of the daughter cells. Select the last spot in the TrackScheme, go to the XY bdv, hover the mouse over the circle and hold `A`, move the spot, and release `A` to add it. Do it for a few frames
-- Then go back to the pre-division spot and do the same for the other daughter cell
-- This will create the first branch of the lineage tree (adjust the TrackScheme view to see it)
+
+![](media/32-bdv-sync.png)
+
+- Why is this useful for manual tracking?
+- Adjust the view to center the spot in the second bdv window, press `Shift+Y`, and select a spot from the TrackScheme. Now we have both XY and ZY views of the same nucleus!
+
+![](media/33-bdv-ortho.png)
+
+- Which is great for tracking in 3D. You can check, for instance, that your spot is well centered in Z and adjust it in this window
+
+![](media/34-bdv-division.png)
+
+- Continue the tracking of one of the daughter cells. Select the last spot in the TrackScheme, go to the XY bdv, hover the mouse over the circle and hold `A`, move the spot, and release `A` to add it.
+- Do it for a few frames
+- Then go back to the pre-division spot and add a linked spot corresponding to the other daughter cell
+- This will create the first branch of the lineage tree
+
+![](media/35-add-split.png)
+
+- Continue tracking the second daughter cell for a few frames
+
+![](media/36-track-daughter.png)
+
+- If you zoom out the TrackScheme view you will be able to see the full branched tree
+
+![](media/37-tree-branch.png)
 
 ## Semi-Automated Tracking {#sec-semiauto-tracking}
 
