@@ -251,10 +251,20 @@ Note! If you are following this during the course, the dataset has already been 
 ## Semi-Automated Tracking {#sec-semiauto-tracking}
 
 - This mode will try to guess where the next nucleus is and automatically create the spots and links
-- It requires you to set one spot, so let's pick a different nucleus. Choose a bright one you like
-- Now, hovering above the circle press `Ctrl+T`
-- A lineage will appear in the TrackScheme. Check how accurate it is by clicking on the spots and watching their position relative to the nucleus in the bdv windows
+- To start, choose a different nucleus to track and press `A` to add a new spot
+
+![](media/38-semi-spot.png)
+
+- Now, hovering the pointer above the spot press `Ctrl+T`
+- A lineage will appear in the TrackScheme.
+
+![](media/39-semi-auto.png)
+
+- Check how accurate it is by clicking on the spots and watching their position relative to the nucleus in the bdv windows
 - Try going further by hovering on a spot and pressing `Ctrl+T` to continue the semi-automated tracking. See how long you can go, how it behaves with cell divisions, and which cells work well with it and which don't
+
+![](media/40-semi-more.png)
+
 - There are many parameters that can be adjusted to tweak the semi-automated tracking behavior, check the documentation
 
 ## Automatic Detection and Linking {#sec-auto-tracking}
