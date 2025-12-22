@@ -1,5 +1,5 @@
 ---
-title: Cell tracking using Mastodon in Fiji
+title: Cell tracking using Mastodon
 author: Bruno C. Vellutini
 date: today
 date-format: long
