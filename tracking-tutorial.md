@@ -19,7 +19,7 @@ urlcolor: MidnightBlue
 
 ## Summary {#sec-summary}
 
-This is a basic tutorial on how to track cells in Fiji [@Schindelin2012-di] using Mastodon [@Girstmair2025-qd]. The goals are to learn how to load and create Mastodon datasets, get familiar with navigating the BigDataViewer and TrackScheme windows, perform manual cell tracking with cell divisions and simple editing of lineages, perform semi-automated detection and tracking, and try some lineage analysis. We will use a demo Mastodon dataset [@Girstmair2024-iv] generated with lightsheet data from the isopod *Parhyale hawaiensis* [@Wolff2018-fr]. For more information and detailed intructions, please check Mastodon's [official documentation](https://mastodon.readthedocs.io/).
+This is a basic tutorial on how to track cells in Fiji [@Schindelin2012-di] using Mastodon [@Girstmair2025-qd]. The goals are to learn how to load and create Mastodon datasets, get familiar with navigating the BigDataViewer and TrackScheme windows, perform manual cell tracking with cell divisions and simple editing of lineages, perform semi-automated detection and tracking, and try some lineage analysis. We will use a demo Mastodon dataset [@Girstmair2024-iv] generated with lightsheet data from the isopod *Parhyale hawaiensis* [@Wolff2018-fr]. For more information and detailed instructions, please check Mastodon's [official documentation](https://mastodon.readthedocs.io/).
 
 ## Requirements {#sec-requirements}
 
@@ -32,8 +32,8 @@ This is a basic tutorial on how to track cells in Fiji [@Schindelin2012-di] usin
 ### Download Dataset {#sec-setup-dataset}
 
 - Download `Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip` dataset from this [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.13944688) [@Girstmair2024-iv]. The direct link to the file is [here](https://zenodo.org/records/13944688/files/Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip?download=1) (4.3GB).
-- Move the ZIP file to a working directory
-- Unzip `Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip`
+- Move the ZIP file to a working directory.
+- Unzip `Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip`.
 
 ::: {layout-ncol=2}
 
@@ -43,7 +43,7 @@ This is a basic tutorial on how to track cells in Fiji [@Schindelin2012-di] usin
 
 :::
 
-After unzipping the contents will occupy 23GB of disk space.
+After unzipping, the contents will occupy 23GB of disk space.
 
 ### Download Fiji {#sec-setup-fiji}
 
@@ -56,12 +56,12 @@ After unzipping the contents will occupy 23GB of disk space.
 
 ### Install Mastodon {#sec-setup-mastodon}
 
-- Click on `Help > Update...`
+- Click on `Help` > `Update...`.
 
 ![](media/04-fiji-update.png)
 
-- The updater will open and say Fiji is up-to-date
-- Click `Manage Update Sites`
+- The updater will open and say Fiji is up-to-date.
+- Click `Manage Update Sites`.
 
 ::: {layout-ncol=2}
 
@@ -71,24 +71,24 @@ After unzipping the contents will occupy 23GB of disk space.
 
 :::
 
-- A window will open with a list of plugins available to install in Fiji
+- A window will open with a list of plugins available to install in Fiji.
 
 ![](media/07-fiji-plugins.png)
 
-- Search for "mastodon"
+- Search for "mastodon".
 
 ![](media/08-fiji-search.png)
 
-- Several Mastodon related plugins will appear
-- Click on the checkbox for `Mastodon`
+- Several Mastodon-related plugins will appear.
+- Click on the checkbox for `Mastodon`.
 
 ![](media/09-fiji-mastodon.png)
 
-- Click `Apply and Close` and then `Apply Changes`
+- Click `Apply and Close` and then `Apply Changes`.
 
 ![](media/10-fiji-apply.png)
 
-- Wait... until the downloads are finished. Then, click `OK`
+- Wait... until the downloads are finished. Then, click `OK`.
 
 ::: {layout-ncol=2}
 
@@ -98,17 +98,17 @@ After unzipping the contents will occupy 23GB of disk space.
 
 :::
 
-- Restart Fiji (close window and double-click the launcher)
+- Restart Fiji (close window and double-click the launcher).
 
 ## Open Mastodon Project {#sec-open-project}
 
-- In Fiji click on `Plugins` > `Tracking` > `Mastodon` > `Mastodon Launcher`
+- In Fiji click on `Plugins` > `Tracking` > `Mastodon` > `Mastodon Launcher`.
 
 ![](media/13-mastodon-launch.png)
 
 The Mastodon Launcher window will open.
 
-- Click on `open Mastodon project` (top left) and `Open another project` (bottom right)
+- Click on `open Mastodon project` (top left) and `Open another project` (bottom right).
 
 ::: {layout-ncol=2}
 
@@ -118,12 +118,12 @@ The Mastodon Launcher window will open.
 
 :::
 
-- Navigate to the directory `Mastodon_Auto-Tracking_Demo_Ph-limb-dev/`
-- Select the file `Parhyale_LimbDev_30tps.mastodon`
+- Navigate to the directory `Mastodon_Auto-Tracking_Demo_Ph-limb-dev/`.
+- Select the file `Parhyale_LimbDev_30tps.mastodon`.
 
 ![](media/16-mastodon-open.png)
 
-Several new windows will open (Console, Mastodon, BigDataViewer, TrackScheme, Data table)
+Several new windows will open (Console, Mastodon, BigDataViewer, TrackScheme, Data table).
 
 ![](media/17-mastodon-windows.png)
 
@@ -135,18 +135,18 @@ Let's focus on the Mastodon window.
 
 ![](media/18-mastodon-main.png)
 
-This is the main project menu from where we can open windows, set options, process data and save the project. The most important buttons for this tutorial are `bdv` (BigDataViewer) and `trackscheme`
+This is the main project menu from where we can open windows, set options, process data and save the project. The most important buttons for this tutorial are `bdv` (BigDataViewer) and `trackscheme`.
 
-- Click on `bdv` and make the window larger
+- Click on `bdv` and make the window larger.
 
 ![](media/19-mastodon-bdv.png)
 
-- Drag the timepoint slider at the bottom to see cells moving and dividing
-- Using our acquired BigDataViewer skills, focus on the surface of the embryo
-- If you get lost, press `Shift+Z` to re-orient the embryo
-- Find a cell that divides before timepoint 15 and looks trackable and zoom on it using `Ctrl+Shift+scroll`
-- Then center the view on it by holding the right button and dragging the mouse
-- Use `Shift+scroll` to navigate through z and `M-N` to go through time
+- Drag the timepoint slider at the bottom to see cells moving and dividing.
+- Using our acquired BigDataViewer skills, focus on the surface of the embryo.
+- If you get lost, press `Shift+Z` to re-orient the embryo.
+- Find a cell that divides before timepoint 15 and looks trackable and zoom on it using `Ctrl+Shift+Scroll`.
+- Then center the view on it by holding the right button and dragging the mouse.
+- Use `Shift+Scroll` to navigate through Z and `M`/`N` to go through time.
 
 ::: {layout-ncol=2}
 
@@ -160,28 +160,28 @@ We are ready to track.
 
 ## Manual Tracking {#sec-manual-tracking}
 
-- On the Mastodon project window, click on the `trackscheme` button
+- On the Mastodon project window, click on the `trackscheme` button.
 
 ![](media/22-trackscheme-window.png)
 
 The `TrackScheme` window will appear.
 
-- Resize the `BigDataViewer` window to be side-by-side with the `TrackScheme`
-- Click on the `BigDataViewer` window, set the timepoint to some frames before mitosis, `Shift+scroll` to find the center of the nucleus, put the mouse pointer there and press `A`
+- Resize the `BigDataViewer` window to be side-by-side with the `TrackScheme`.
+- Click on the `BigDataViewer` window, set the timepoint to some frames before mitosis, `Shift+Scroll` to find the center of the nucleus, put the mouse pointer there and press `A`.
 
 ![](media/23-manual-add.png)
 
-A round magenta circle will appear over the nucleus and in the `TrackScheme`
+A round magenta circle will appear over the nucleus and in the `TrackScheme`.
 
-- With the mouse over the circle, use `Shift+Q` and `Shift+E` to adjust the size of the spot to roughly the nucleus diameter
+- With the mouse over the circle, use `Shift+Q` and `Shift+E` to adjust the size of the spot to roughly the nucleus diameter.
 
 ![](media/24-manual-resize.png)
 
-- Zoom in on the new spot in the `TrackScheme`, hover and click on it and watch what happens in the `BigDataViewer` window
+- Zoom in on the new spot in the `TrackScheme`, hover and click on it and watch what happens in the `BigDataViewer` window.
 
 ![](media/25-click-spot.png)
 
-- Go back to the `BigDataViewer`, hover the pointer over the circle and hold the spacebar to adjust the position of the circle and the nucleus
+- Go back to the `BigDataViewer`, hover the pointer over the circle and hold the spacebar to adjust the position of the circle and the nucleus.
 
 ![](media/26-adjust-position.png)
 
@@ -191,33 +191,33 @@ Now let's add a second spot.
 
 ![](media/27-hold-a.png)
 
-- Still holding `A`, position the second spot, then release `A` to create the new linked spot
+- Still holding `A`, position the second spot, then release `A` to create the new linked spot.
 
 ![](media/28-release-a.png)
 
 Check how the second spot and a link were created in the TrackScheme automatically.
 
-- Continue to track the nucleus for a few more frames, until the frame immediately before division
+- Continue to track the nucleus for a few more frames, until the frame immediately before division.
 
 Note that when clicking on a spot in the BigDataViewer window, the corresponding spot is highlighted in the TrackScheme window.
 
-- Now click on the spots in the TrackScheme and see what happens to the BigDataViewer (nothing will happen)
+- Now click on the spots in the TrackScheme and see what happens to the BigDataViewer (nothing will happen).
 
-Let's change that and link the BigDataViewer and TrackScheme windows. In the menu bar of BigDataViewer and TrackScheme windows there are lock symbols 1, 2, 3.
+Let's change that and link the BigDataViewer and TrackScheme windows. In the menu bar of BigDataViewer and TrackScheme windows there are lock symbols `1`, `2`, `3`.
 
-- Click on `Lock 1` in both windows
+- Click on `Lock 1` in both windows.
 
 ![](media/29-lock-windows.png)
 
-- Now click through spots in the TrackScheme
+- Now click through spots in the TrackScheme.
 
 ![](media/30-locked-behavior.png)
 
-The view in the BigDataViewer will change to show the selected spot at the center
+The view in the BigDataViewer will change to show the selected spot at the center.
 
 Before we continue tracking the cell division, let's check one of the amazing Mastodon features.
 
-- Click on the `BigDataViewer` button in the Mastodon project window and another BigDataViewer window will open
+- Click on the `BigDataViewer` button in the Mastodon project window and another BigDataViewer window will open.
 
 ![](media/31-bdv-new.png)
 
@@ -233,25 +233,25 @@ Why is this useful for manual tracking?
 
 ![](media/33-bdv-ortho.png)
 
-We can have both XY and ZY views of the same nucleus! This is great for tracking in 3D. We can check, for instance, that our spot is well centered in Z and adjust it in this window
+We can have both XY and ZY views of the same nucleus! This is great for tracking in 3D. We can check, for instance, that our spot is well centered in Z and adjust it in this window.
 
 ![](media/34-bdv-division.png)
 
 Continue tracking one of the daughter cells.
 
 - Select the last spot in the TrackScheme, go to the XY BigDataViewer, hover the mouse over the circle and hold `A`, move the spot, and release `A` to add it.
-- Do it for a few frames
-- Then go back to the pre-division spot and add a linked spot corresponding to the other daughter cell
+- Do it for a few frames.
+- Then go back to the pre-division spot and add a linked spot corresponding to the other daughter cell.
 
 ![](media/35-add-split.png)
 
 This will create the first branch of the lineage tree.
 
-- Continue tracking the second daughter cell for a few frames
+- Continue tracking the second daughter cell for a few frames.
 
 ![](media/36-track-daughter.png)
 
-- Zoom out the TrackScheme view to see the full branched tree
+- Zoom out the TrackScheme view to see the full branched tree.
 
 ![](media/37-tree-branch.png)
 
@@ -259,11 +259,11 @@ This will create the first branch of the lineage tree.
 
 This mode will try to guess where the next nucleus is and automatically create the spots and links.
 
-- To start, choose a different nucleus to track and press `A` to add a new spot
+- To start, choose a different nucleus to track and press `A` to add a new spot.
 
 ![](media/38-semi-spot.png)
 
-- Now, hovering the pointer above the spot press `Ctrl+T`
+- Now, hovering the pointer above the spot press `Ctrl+T`.
 
 ![](media/39-semi-auto.png)
 
@@ -279,17 +279,17 @@ See how long you can go, how it behaves with cell divisions, and which cells wor
 
 ## Automated Tracking {#sec-auto-tracking}
 
-The final part of this tutorial is to try automatic detection and linking of spots. This is the dream: loading data and getting out a full lineage. However, in practice, it’s a lot messier. Cleaning, fixing, and curating the data is required to get a nice informative lineage. We will use a simplified version of the protocol included in this demo dataset. It is described in the file `Protocol_Auto-Detection_Auto-Linking.docx`.
+The final part of this tutorial is to try automatic detection and linking of spots. This is the dream: loading data and getting out a full lineage. However, in practice, it's a lot messier. Cleaning, fixing, and curating the data is required to get a nice informative lineage. We will use a simplified version of the protocol included in this demo dataset. It is described in the file `Protocol_Auto-Detection_Auto-Linking.docx`.
 
 ![](media/41-auto-doc.png)
 
 ### Detection {#sec-auto-detection}
 
-- In the Mastodon window, go to `Plugins` > `Tracking` > `Detection...`
+- In the Mastodon window, go to `Plugins` > `Tracking` > `Detection...`.
 
 ![](media/42-auto-detect.png)
 
-- Press `Next` twice (leave options as is)
+- Press `Next` twice (leave options as is).
 
 ::: {layout-ncol=2}
 
@@ -299,12 +299,12 @@ The final part of this tutorial is to try automatic detection and linking of spo
 
 :::
 
-- Choose `Advanced DoG detector` and press `Next`
-- Keep `Detect: bright blobs`
-- Change `Estimated diameter` to `35px`
-- Change `Quality threshold` to `100`
-- Keep `Behavior` as `Add`
-- Then, press `Next`
+- Choose `Advanced DoG detector` and press `Next`.
+- Keep `Detect: bright blobs`.
+- Change `Estimated diameter` to `35px`.
+- Change `Quality threshold` to `100`.
+- Keep `Behavior` as `Add`.
+- Then, press `Next`.
 
 ::: {layout-ncol=2}
 
@@ -320,18 +320,18 @@ The final part of this tutorial is to try automatic detection and linking of spo
 
 Are there too many false positives? Try changing the diameter, for example, and run the preview again to see what happens to the detected spots.
 
-- Once satisfied, press `Next` and wait
+- Once satisfied, press `Next` and wait.
 
 ![](media/48-detect-run.png)
 
-- When the detection is done, press `Finish`
+- When the detection is done, press `Finish`.
 
 ![](media/49-detect-done.png)
 
 The BigDataViewer windows and the TrackScheme will be showing a lot of new spots.
 
 - Explore the spots in the BigDataViewer and TrackScheme windows.
-- Zoom in to see the unlinked, individual spots per frame
+- Zoom in to see the unlinked, individual spots per frame.
 
 ![](media/50-detect-detail.png)
 
@@ -339,7 +339,7 @@ The BigDataViewer windows and the TrackScheme will be showing a lot of new spots
 
 Before we try to automatically link these spots, let's remove low quality detections.
 
-- On the Mastodon window click on `Table`, resize it to have more space, and resize the column `Detection q...` to show `Detection quality`
+- On the Mastodon window click on `Table`, resize it to have more space, and resize the column `Detection q...` to show `Detection quality`.
 
 ::: {layout-ncol=2}
 
@@ -349,28 +349,28 @@ Before we try to automatically link these spots, let's remove low quality detect
 
 :::
 
-- Click on `Detection quality` to sort the table
+- Click on `Detection quality` to sort the table.
 
 ![](media/53-table-sort.png)
 
-- Click on the first row to select it. Select all rows where `Detection quality` is <400
-- Then click `Edit > Delete Selection`
+- Click on the first row to select it. Select all rows where `Detection quality` is `<400`.
+- Then click `Edit` > `Delete Selection`.
 
 ![](media/54-table-delete.png)
 
-- Close the table
+- Close the table.
 
 We can also manually delete obviously wrong spots by hovering and pressing `D`.
 
-- Give it a try by cleaning up the spots outside the embryo
+- Give it a try by cleaning up the spots outside the embryo.
 
 ### Linking {#sec-auto-linking}
 
 Now let's try linking spots.
 
-- In the main Mastodon window click on `Plugins` > `Tracking` > `Linking...`
-- Keep `All spots` selected for all timepoints (0-29) and press `Next`
-- Choose `Lap linker` and click `Next`
+- In the main Mastodon window click on `Plugins` > `Tracking` > `Linking...`.
+- Keep `All spots` selected for all timepoints (`0-29`) and press `Next`.
+- Choose `Lap linker` and click `Next`.
 
 ::: {layout-ncol=2}
 
@@ -381,10 +381,10 @@ Now let's try linking spots.
 :::
 
 - Change the parameters to:
-  - `Frame to frame linking`: `Max distance` to `40px`
-  - `Gap closing`: `Max distance` to `60px` (keep others as is)
-  - `Track division`: Check `Allow track division`, set `Max distance` to `40px`, and press `+` to add a `Feature penalty` and set it to `Center ch1` to `0.3`
-- Press `Next` to start linking and wait... then press `Finish`
+  - `Frame to frame linking`: `Max distance` to `40px`.
+  - `Gap closing`: `Max distance` to `60px` (keep others as is).
+  - `Track division`: Check `Allow track division`, set `Max distance` to `40px`, and press `+` to add a `Feature penalty` and set it to `Center ch1` to `0.3`.
+- Press `Next` to start linking and wait... then press `Finish`.
 
 ::: {layout-ncol=2}
 
@@ -396,7 +396,7 @@ Now let's try linking spots.
 
 Note that there are now tracks in the BigDataViewer and TrackScheme windows.
 
-- Explore them a bit
+- Explore them a bit.
 
 ![](media/59-link-explore.png)
 
@@ -406,30 +406,30 @@ Mastodon can calculate features (position, displacement, velocity, etc.) of indi
 
 ![](media/60-compute-features.png)
 
-A Feature calculation window will open
+A Feature calculation window will open.
 
 - Press `compute` and wait... when it's done, close it.
 
 ![](media/61-computed-tracks.png)
 
-Note that now the tracks in the BigDataViewer is showing colored links 
+Note that now the tracks in the BigDataViewer are showing colored links.
 
-- Open the table window from the main window
+- Open the table window from the main window.
 
 ![](media/62-computed-features.png)
 
-It’ll be filled with computed features
+It'll be filled with computed features.
 
 ## Basic Feature Visualization {#sec-feature-visualization}
 
 Finally, let's visualize the computed features that might be interesting or useful.
 
-- In the BigDataViewer window press `File` > `Preferences` to open the feature color coding visualization parameters
+- In the BigDataViewer window press `File` > `Preferences` to open the feature color coding visualization parameters.
 
 ![](media/63-open-settings.png)
 
 - On `Settings` > `Feature Color Modes` click on `Duplicate` (it'll generate a `Number of links (2)`) and then `Rename`.
-- Rename it to `Velocity`
+- Rename it to `Velocity`.
 
 ::: {layout-ncol=2}
 
@@ -439,39 +439,39 @@ Finally, let's visualize the computed features that might be interesting or usef
 
 :::
 
-- On the `Coloring Spots` change `Read spot color from` to `Incoming link` and change `Feature` to `Link velocity`. Then click on `autoscale` in the range
-- On the `Coloring Links` change `Read link color from` to `Link` and change `Feature` to `Link velocity`. Then also click on `autoscale`
-- Click `Apply` (nothing will happen), then `OK`
+- On the `Coloring Spots` change `Read spot color from` to `Incoming link` and change `Feature` to `Link velocity`. Then click on `autoscale` in the range.
+- On the `Coloring Links` change `Read link color from` to `Link` and change `Feature` to `Link velocity`. Then also click on `autoscale`.
+- Click `Apply` (nothing will happen), then `OK`.
 
 ![](media/66-colormode-params.png)
 
-- On the BigDataViewer window press `View > Coloring > Velocity`
+- On the BigDataViewer window press `View` > `Coloring` > `Velocity`.
 
 ![](media/67-velocity-apply.png)
 
-The spots and links in the BigDataViewer window will change colors
+The spots and links in the BigDataViewer window will change colors.
 
 ![](media/68-velocity-colors.png)
 
-- Do the same for the other BigDataViewer window and the TrackScheme
+- Do the same for the other BigDataViewer window and the TrackScheme.
 
 ![](media/69-velocity-tracks.png)
 
-This gives a visual representation of cells which have a high displacement per frame. These might be artifacts in linking unrelated spots or, in a good processed lineage, reveal some biological process like cell migration
+This gives a visual representation of cells which have a high displacement per frame. These might be artifacts in linking unrelated spots or, in a good processed lineage, reveal some biological process like cell migration.
 
 ## Graph Plotting {#sec-graph-plotting}
 
 To finalize, a simple example of plotting the lineage data.
 
-- Click on `grapher` in the main Mastodon window, a plot window will open
+- Click on `grapher` in the main Mastodon window, a plot window will open.
 
 ![](media/70-grapher-open.png)
 
-- Press the `Lock 1` to lock the windows, select `Link velocity - outgoing` for X axis and `Detection quality` for Y axis and press `Plot`
+- Press the `Lock 1` to lock the windows, select `Link velocity - outgoing` for X axis and `Detection quality` for Y axis and press `Plot`.
 
 ![](media/71-grapher-plot.png)
 
-- Find out if the spots with the highest link velocity are properly linked or if it is an artifact
+- Find out if the spots with the highest link velocity are properly linked or if it is an artifact.
 
 ![](media/72-grapher-analysis.png)
 
