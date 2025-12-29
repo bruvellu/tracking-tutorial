@@ -142,7 +142,7 @@ This is the main project menu from where we can open windows, set options, proce
 ![](media/19-mastodon-bdv.png)
 
 - Drag the timepoint slider at the bottom to see cells moving and dividing.
-- Using our acquired BigDataViewer skills, focus on the surface of the embryo.
+- Using our acquired `BigDataViewer` skills, focus on the surface of the embryo.
 - If you get lost, press `Shift+Z` to re-orient the embryo.
 - Find a cell that divides before timepoint 15 and looks trackable and zoom on it using `Ctrl+Shift+Scroll`.
 - Then center the view on it by holding the right button and dragging the mouse.
@@ -195,33 +195,33 @@ Now let's add a second spot.
 
 ![](media/28-release-a.png)
 
-Check how the second spot and a link were created in the TrackScheme automatically.
+Check how the second spot and a link were created in the `TrackScheme` automatically.
 
 - Continue to track the nucleus for a few more frames, until the frame immediately before division.
 
-Note that when clicking on a spot in the BigDataViewer window, the corresponding spot is highlighted in the TrackScheme window.
+Note that when clicking on a spot in the `BigDataViewer` window, the corresponding spot is highlighted in the `TrackScheme` window.
 
-- Now click on the spots in the TrackScheme and see what happens to the BigDataViewer (nothing will happen).
+- Now click on the spots in the `TrackScheme` and see what happens to the `BigDataViewer` (nothing will happen).
 
-Let's change that and link the BigDataViewer and TrackScheme windows. In the menu bar of BigDataViewer and TrackScheme windows there are lock symbols `1`, `2`, `3`.
+Let's change that and link the `BigDataViewer` and `TrackScheme` windows. In the menu bar of `BigDataViewer` and `TrackScheme` windows there are lock symbols `1`, `2`, `3`.
 
 - Click on `Lock 1` in both windows.
 
 ![](media/29-lock-windows.png)
 
-- Now click through spots in the TrackScheme.
+- Now click through spots in the `TrackScheme`.
 
 ![](media/30-locked-behavior.png)
 
-The view in the BigDataViewer will change to show the selected spot at the center.
+The view in the `BigDataViewer` will change to show the selected spot at the center.
 
 Before we continue tracking the cell division, let's check one of the amazing Mastodon features.
 
-- Click on the `BigDataViewer` button in the Mastodon project window and another BigDataViewer window will open.
+- Click on the `BigDataViewer` button in the Mastodon project window and another `BigDataViewer` window will open.
 
 ![](media/31-bdv-new.png)
 
-- Now activate `Lock 1` and click on one of the TrackScheme spots.
+- Now activate `Lock 1` and click on one of the `TrackScheme` spots.
 
 ![](media/32-bdv-sync.png)
 
@@ -229,7 +229,7 @@ Both windows will be synchronized!
 
 Why is this useful for manual tracking?
 
-- Adjust the view to center the spot in the second BigDataViewer window, press `Shift+Y`, and select a spot from the TrackScheme.
+- Adjust the view to center the spot in the second `BigDataViewer` window, press `Shift+Y`, and select a spot from the `TrackScheme`.
 
 ![](media/33-bdv-ortho.png)
 
@@ -239,7 +239,7 @@ We can have both XY and ZY views of the same nucleus! This is great for tracking
 
 Continue tracking one of the daughter cells.
 
-- Select the last spot in the TrackScheme, go to the XY BigDataViewer, hover the mouse over the circle and hold `A`, move the spot, and release `A` to add it.
+- Select the last spot in the `TrackScheme`, go to the XY `BigDataViewer`, hover the mouse over the circle and hold `A`, move the spot, and release `A` to add it.
 - Do it for a few frames.
 - Then go back to the pre-division spot and add a linked spot corresponding to the other daughter cell.
 
@@ -251,7 +251,7 @@ This will create the first branch of the lineage tree.
 
 ![](media/36-track-daughter.png)
 
-- Zoom out the TrackScheme view to see the full branched tree.
+- Zoom out the `TrackScheme` view to see the full branched tree.
 
 ![](media/37-tree-branch.png)
 
@@ -267,9 +267,9 @@ This mode will try to guess where the next nucleus is and automatically create t
 
 ![](media/39-semi-auto.png)
 
-A lineage will appear in the TrackScheme.
+A lineage will appear in the `TrackScheme`.
 
-Check how accurate it is by clicking on the spots and watching their position relative to the nucleus in the BigDataViewer windows. Try going further with the semi-automated tracking.
+Check how accurate it is by clicking on the spots and watching their position relative to the nucleus in the `BigDataViewer` windows. Try going further with the semi-automated tracking.
 
 - Hover a spot and press `Ctrl+T` to continue the semi-automated tracking.
 
@@ -314,7 +314,7 @@ The final part of this tutorial is to try automatic detection and linking of spo
 
 :::
 
-- Click `Preview` and see how well the detection will work by exploring a new BigDataViewer window.
+- Click `Preview` and see how well the detection will work by exploring a new `BigDataViewer` window.
 
 ![](media/47-detect-preview.png)
 
@@ -328,9 +328,9 @@ Are there too many false positives? Try changing the diameter, for example, and 
 
 ![](media/49-detect-done.png)
 
-The BigDataViewer windows and the TrackScheme will be showing a lot of new spots.
+The `BigDataViewer` windows and the `TrackScheme` will be showing a lot of new spots.
 
-- Explore the spots in the BigDataViewer and TrackScheme windows.
+- Explore the spots in the `BigDataViewer` and `TrackScheme` windows.
 - Zoom in to see the unlinked, individual spots per frame.
 
 ![](media/50-detect-detail.png)
@@ -394,7 +394,7 @@ Now let's try linking spots.
 
 :::
 
-Note that there are now tracks in the BigDataViewer and TrackScheme windows.
+Note that there are now tracks in the `BigDataViewer` and `TrackScheme` windows.
 
 - Explore them a bit.
 
@@ -412,7 +412,7 @@ A Feature calculation window will open.
 
 ![](media/61-computed-tracks.png)
 
-Note that now the tracks in the BigDataViewer are showing colored links.
+Note that now the tracks in the `BigDataViewer` are showing colored links.
 
 - Open the table window from the main window.
 
@@ -424,7 +424,7 @@ It'll be filled with computed features.
 
 Finally, let's visualize the computed features that might be interesting or useful.
 
-- In the BigDataViewer window press `File` > `Preferences` to open the feature color coding visualization parameters.
+- In the `BigDataViewer` window press `File` > `Preferences` to open the feature color coding visualization parameters.
 
 ![](media/63-open-settings.png)
 
@@ -445,15 +445,15 @@ Finally, let's visualize the computed features that might be interesting or usef
 
 ![](media/66-colormode-params.png)
 
-- On the BigDataViewer window press `View` > `Coloring` > `Velocity`.
+- On the `BigDataViewer` window press `View` > `Coloring` > `Velocity`.
 
 ![](media/67-velocity-apply.png)
 
-The spots and links in the BigDataViewer window will change colors.
+The spots and links in the `BigDataViewer` window will change colors.
 
 ![](media/68-velocity-colors.png)
 
-- Do the same for the other BigDataViewer window and the TrackScheme.
+- Do the same for the other `BigDataViewer` window and the `TrackScheme`.
 
 ![](media/69-velocity-tracks.png)
 
