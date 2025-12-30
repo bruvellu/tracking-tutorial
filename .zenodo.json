@@ -1,0 +1,25 @@
+{
+    "upload_type": "lesson",
+    "title": "Cell tracking in Fiji using Mastodon",
+    "description": "This is a basic tutorial on how to track cells in Fiji using Mastodon.",
+    "creators": [
+        {
+            "name": "Vellutini, Bruno C.",
+            "orcid": "0000-0002-0000-9465",
+            "affiliation": [
+                "Max Planck Institute of Molecular Cell Biology and Genetics",
+                "Universidade Federal de Minas Gerais"
+            ]
+        }
+    ],
+    "publication_date": "2026-01-05",
+    "keywords": [
+        "Fiji",
+        "ImageJ",
+        "Lightsheet",
+        "Cell Tracking",
+        "Mastodon",
+        "BigDataViewer",
+        "Tutorial"
+    ]
+}
