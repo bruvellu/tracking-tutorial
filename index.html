@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bruno C. Vellutini">
+<meta name="dcterms.date" content="2026-01-05">
+
+<title>Cell tracking in Fiji using Mastodon</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="tracking-tutorial_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/popper.min.js"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="tracking-tutorial_files/libs/quarto-html/anchor.min.js"></script>
+<link href="tracking-tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tracking-tutorial_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="tracking-tutorial_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="tracking-tutorial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="tracking-tutorial_files/libs/bootstrap/bootstrap-657b9861459bc2f913453485b89f698e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="tracking-tutorial_files/libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="tracking-tutorial_files/libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="tracking-tutorial_files/libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-summary" id="toc-sec-summary" class="nav-link active" data-scroll-target="#sec-summary">Summary</a></li>
+  <li><a href="#sec-requirements" id="toc-sec-requirements" class="nav-link" data-scroll-target="#sec-requirements">Requirements</a></li>
+  <li><a href="#sec-setup" id="toc-sec-setup" class="nav-link" data-scroll-target="#sec-setup">Setup</a>
+  <ul>
+  <li><a href="#sec-setup-dataset" id="toc-sec-setup-dataset" class="nav-link" data-scroll-target="#sec-setup-dataset">Download Dataset</a></li>
+  <li><a href="#sec-setup-fiji" id="toc-sec-setup-fiji" class="nav-link" data-scroll-target="#sec-setup-fiji">Download Fiji</a></li>
+  <li><a href="#sec-setup-mastodon" id="toc-sec-setup-mastodon" class="nav-link" data-scroll-target="#sec-setup-mastodon">Install Mastodon</a></li>
+  </ul></li>
+  <li><a href="#sec-open-project" id="toc-sec-open-project" class="nav-link" data-scroll-target="#sec-open-project">Open Mastodon Project</a></li>
+  <li><a href="#sec-inspect-dataset" id="toc-sec-inspect-dataset" class="nav-link" data-scroll-target="#sec-inspect-dataset">Inspect the Dataset</a></li>
+  <li><a href="#sec-manual-tracking" id="toc-sec-manual-tracking" class="nav-link" data-scroll-target="#sec-manual-tracking">Manual Tracking</a></li>
+  <li><a href="#sec-semiauto-tracking" id="toc-sec-semiauto-tracking" class="nav-link" data-scroll-target="#sec-semiauto-tracking">Semi-Automated Tracking</a></li>
+  <li><a href="#sec-auto-tracking" id="toc-sec-auto-tracking" class="nav-link" data-scroll-target="#sec-auto-tracking">Automated Tracking</a>
+  <ul>
+  <li><a href="#sec-auto-detection" id="toc-sec-auto-detection" class="nav-link" data-scroll-target="#sec-auto-detection">Detection</a></li>
+  <li><a href="#sec-auto-cleaning" id="toc-sec-auto-cleaning" class="nav-link" data-scroll-target="#sec-auto-cleaning">Cleaning</a></li>
+  <li><a href="#sec-auto-linking" id="toc-sec-auto-linking" class="nav-link" data-scroll-target="#sec-auto-linking">Linking</a></li>
+  </ul></li>
+  <li><a href="#sec-feature-visualization" id="toc-sec-feature-visualization" class="nav-link" data-scroll-target="#sec-feature-visualization">Basic Feature Visualization</a></li>
+  <li><a href="#sec-graph-plotting" id="toc-sec-graph-plotting" class="nav-link" data-scroll-target="#sec-graph-plotting">Graph Plotting</a></li>
+  <li><a href="#sec-citation" id="toc-sec-citation" class="nav-link" data-scroll-target="#sec-citation">Citation</a></li>
+  <li><a href="#sec-license" id="toc-sec-license" class="nav-link" data-scroll-target="#sec-license">License</a></li>
+  <li><a href="#sec-references" id="toc-sec-references" class="nav-link" data-scroll-target="#sec-references">References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Cell tracking in Fiji using Mastodon</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Bruno C. Vellutini </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 5, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-summary" class="level2">
+<h2 class="anchored" data-anchor-id="sec-summary">Summary</h2>
+<p>This is a basic tutorial on how to track cells in Fiji <span class="citation" data-cites="Schindelin2012-di">(<a href="#ref-Schindelin2012-di" role="doc-biblioref">Schindelin et al. 2012</a>)</span> using Mastodon <span class="citation" data-cites="Girstmair2025-qd">(<a href="#ref-Girstmair2025-qd" role="doc-biblioref">Girstmair et al. 2025</a>)</span>. The goals are to learn how to load and create Mastodon datasets, get familiar with navigating the BigDataViewer and TrackScheme windows, perform manual cell tracking with cell divisions and simple editing of lineages, perform semi-automated detection and tracking, and try some lineage analysis. We will use a demo Mastodon dataset <span class="citation" data-cites="Girstmair2024-iv">(<a href="#ref-Girstmair2024-iv" role="doc-biblioref">Girstmair 2024</a>)</span> generated with lightsheet data from the isopod <em>Parhyale hawaiensis</em> <span class="citation" data-cites="Wolff2018-fr">(<a href="#ref-Wolff2018-fr" role="doc-biblioref">Wolff et al. 2018</a>)</span>. For more information and detailed instructions, please check Mastodon’s <a href="https://mastodon.readthedocs.io/">official documentation</a>.</p>
+</section>
+<section id="sec-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="sec-requirements">Requirements</h2>
+<ul>
+<li><a href="https://fiji.sc">Fiji</a> <span class="citation" data-cites="Schindelin2012-di">(<a href="#ref-Schindelin2012-di" role="doc-biblioref">Schindelin et al. 2012</a>)</span></li>
+<li><a href="https://mastodon.readthedocs.io/">Mastodon</a> plugin <span class="citation" data-cites="Girstmair2025-qd">(<a href="#ref-Girstmair2025-qd" role="doc-biblioref">Girstmair et al. 2025</a>)</span></li>
+<li><code>Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip</code> dataset <span class="citation" data-cites="Girstmair2024-iv">(<a href="#ref-Girstmair2024-iv" role="doc-biblioref">Girstmair 2024</a>)</span></li>
+</ul>
+</section>
+<section id="sec-setup" class="level2">
+<h2 class="anchored" data-anchor-id="sec-setup">Setup</h2>
+<section id="sec-setup-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="sec-setup-dataset">Download Dataset</h3>
+<ul>
+<li>Download <code>Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip</code> dataset from this <a href="https://zenodo.org/doi/10.5281/zenodo.13944688">Zenodo repository</a> <span class="citation" data-cites="Girstmair2024-iv">(<a href="#ref-Girstmair2024-iv" role="doc-biblioref">Girstmair 2024</a>)</span>. The direct link to the file is <a href="https://zenodo.org/records/13944688/files/Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip?download=1">here</a> (4.3GB).</li>
+<li>Move the ZIP file to a working directory.</li>
+<li>Unzip <code>Mastodon_Auto-Tracking_Demo_Ph-limb-dev.zip</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="media/01-dataset-zip.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Working directory after downloading and unzipping the dataset file."><img src="media/01-dataset-zip.png" class="img-fluid figure-img" alt="Working directory after downloading and unzipping the dataset file."></a></p>
+<figcaption>Working directory after downloading and unzipping the dataset file.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="media/02-dataset-dir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Contents of the dataset directory."><img src="media/02-dataset-dir.png" class="img-fluid figure-img" alt="Contents of the dataset directory."></a></p>
+<figcaption>Contents of the dataset directory.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>After unzipping, the contents will occupy 23GB of disk space.</p>
+</section>
+<section id="sec-setup-fiji" class="level3">
+<h3 class="anchored" data-anchor-id="sec-setup-fiji">Download Fiji</h3>
+<ul>
+<li>Go to <a href="https://fiji.sc" class="uri">https://fiji.sc</a>, choose <code>Distribution: Stable</code>, and click the download button.</li>
+<li>Copy the downloaded archive to the working directory and unzip it.</li>
+<li>Open the <code>Fiji.app</code> directory and double-click on the launcher.</li>
+<li>The main window of Fiji will open.</li>
+</ul>
+<p><a href="media/03-fiji-dir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="media/03-fiji-dir.png" class="img-fluid"></a></p>
+</section>
+<section id="sec-setup-mastodon" class="level3">
+<h3 class="anchored" data-anchor-id="sec-setup-mastodon">Install Mastodon</h3>
+<ul>
+<li>Click on <code>Help</code> &gt; <code>Update...</code>.</li>
+</ul>
+<p><a href="media/04-fiji-update.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="media/04-fiji-update.png" class="img-fluid"></a></p>
+<ul>
+<li>The updater will open and say Fiji is up-to-date.</li>
+<li>Click <code>Manage Update Sites</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/05-fiji-up-to-date.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="media/05-fiji-up-to-date.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/06-fiji-manage.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="media/06-fiji-manage.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>A window will open with a list of plugins available to install in Fiji.</li>
+</ul>
+<p><a href="media/07-fiji-plugins.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="media/07-fiji-plugins.png" class="img-fluid"></a></p>
+<ul>
+<li>Search for “mastodon”.</li>
+</ul>
+<p><a href="media/08-fiji-search.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="media/08-fiji-search.png" class="img-fluid"></a></p>
+<ul>
+<li>Several Mastodon-related plugins will appear.</li>
+<li>Click on the checkbox for <code>Mastodon</code>.</li>
+</ul>
+<p><a href="media/09-fiji-mastodon.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="media/09-fiji-mastodon.png" class="img-fluid"></a></p>
+<ul>
+<li>Click <code>Apply and Close</code> and then <code>Apply Changes</code>.</li>
+</ul>
+<p><a href="media/10-fiji-apply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="media/10-fiji-apply.png" class="img-fluid"></a></p>
+<ul>
+<li>Wait… until the downloads are finished. Then, click <code>OK</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/11-fiji-download.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="media/11-fiji-download.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/12-fiji-restart.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="media/12-fiji-restart.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Restart Fiji (close window and double-click the launcher).</li>
+</ul>
+</section>
+</section>
+<section id="sec-open-project" class="level2">
+<h2 class="anchored" data-anchor-id="sec-open-project">Open Mastodon Project</h2>
+<ul>
+<li>In Fiji click on <code>Plugins</code> &gt; <code>Tracking</code> &gt; <code>Mastodon</code> &gt; <code>Mastodon Launcher</code>.</li>
+</ul>
+<p><a href="media/13-mastodon-launch.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="media/13-mastodon-launch.png" class="img-fluid"></a></p>
+<p>The Mastodon Launcher window will open.</p>
+<ul>
+<li>Click on <code>open Mastodon project</code> (top left) and <code>Open another project</code> (bottom right).</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/14-mastodon-window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="media/14-mastodon-window.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/15-mastodon-project.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="media/15-mastodon-project.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Navigate to the directory <code>Mastodon_Auto-Tracking_Demo_Ph-limb-dev/</code>.</li>
+<li>Select the file <code>Parhyale_LimbDev_30tps.mastodon</code>.</li>
+</ul>
+<p><a href="media/16-mastodon-open.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="media/16-mastodon-open.png" class="img-fluid"></a></p>
+<p>Several new windows will open (Console, Mastodon, BigDataViewer, TrackScheme, Data table).</p>
+<p><a href="media/17-mastodon-windows.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="media/17-mastodon-windows.png" class="img-fluid"></a></p>
+</section>
+<section id="sec-inspect-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="sec-inspect-dataset">Inspect the Dataset</h2>
+<p>Let’s focus on the Mastodon window.</p>
+<ul>
+<li>Close Console, BigDataViewer, TrackScheme, and Data table windows.</li>
+</ul>
+<p><a href="media/18-mastodon-main.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="media/18-mastodon-main.png" class="img-fluid"></a></p>
+<p>This is the main project menu from where we can open windows, set options, process data and save the project. The most important buttons for this tutorial are <code>bdv</code> (BigDataViewer) and <code>trackscheme</code>.</p>
+<ul>
+<li>Click on <code>bdv</code> and make the window larger.</li>
+</ul>
+<p><a href="media/19-mastodon-bdv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="media/19-mastodon-bdv.png" class="img-fluid"></a></p>
+<ul>
+<li>Drag the timepoint slider at the bottom to see cells moving and dividing.</li>
+<li>Using our acquired <code>BigDataViewer</code> skills, focus on the surface of the embryo.</li>
+<li>If you get lost, press <code>Shift+Z</code> to re-orient the embryo.</li>
+<li>Find a cell that divides before timepoint 15 and looks trackable and zoom on it using <code>Ctrl+Shift+Scroll</code>.</li>
+<li>Then center the view on it by holding the right button and dragging the mouse.</li>
+<li>Use <code>Shift+Scroll</code> to navigate through Z and <code>M</code>/<code>N</code> to go through time.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/20-nucleus-before.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20"><img src="media/20-nucleus-before.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/21-nucleus-after.png" class="lightbox" data-gallery="quarto-lightbox-gallery-21"><img src="media/21-nucleus-after.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<p>We are ready to track.</p>
+</section>
+<section id="sec-manual-tracking" class="level2">
+<h2 class="anchored" data-anchor-id="sec-manual-tracking">Manual Tracking</h2>
+<ul>
+<li>On the Mastodon project window, click on the <code>trackscheme</code> button.</li>
+</ul>
+<p><a href="media/22-trackscheme-window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-22"><img src="media/22-trackscheme-window.png" class="img-fluid"></a></p>
+<p>The <code>TrackScheme</code> window will appear.</p>
+<ul>
+<li>Resize the <code>BigDataViewer</code> window to be side-by-side with the <code>TrackScheme</code>.</li>
+<li>Click on the <code>BigDataViewer</code> window, set the timepoint to some frames before mitosis, <code>Shift+Scroll</code> to find the center of the nucleus, put the mouse pointer there and press <code>A</code>.</li>
+</ul>
+<p><a href="media/23-manual-add.png" class="lightbox" data-gallery="quarto-lightbox-gallery-23"><img src="media/23-manual-add.png" class="img-fluid"></a></p>
+<p>A round magenta circle will appear over the nucleus and in the <code>TrackScheme</code>.</p>
+<ul>
+<li>With the mouse over the circle, use <code>Shift+Q</code> and <code>Shift+E</code> to adjust the size of the spot to roughly the nucleus diameter.</li>
+</ul>
+<p><a href="media/24-manual-resize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-24"><img src="media/24-manual-resize.png" class="img-fluid"></a></p>
+<ul>
+<li>Zoom in on the new spot in the <code>TrackScheme</code>, hover and click on it and watch what happens in the <code>BigDataViewer</code> window.</li>
+</ul>
+<p><a href="media/25-click-spot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-25"><img src="media/25-click-spot.png" class="img-fluid"></a></p>
+<ul>
+<li>Go back to the <code>BigDataViewer</code>, hover the pointer over the circle and hold the spacebar to adjust the position of the circle and the nucleus.</li>
+</ul>
+<p><a href="media/26-adjust-position.png" class="lightbox" data-gallery="quarto-lightbox-gallery-26"><img src="media/26-adjust-position.png" class="img-fluid"></a></p>
+<p>Now let’s add a second spot.</p>
+<ul>
+<li>Hover the mouse inside the circle and hold <code>A</code>. This will advance to the next frame showing the first spot in white dashed line and the second spot in white solid line with a white solid link between the two.</li>
+</ul>
+<p><a href="media/27-hold-a.png" class="lightbox" data-gallery="quarto-lightbox-gallery-27"><img src="media/27-hold-a.png" class="img-fluid"></a></p>
+<ul>
+<li>Still holding <code>A</code>, position the second spot, then release <code>A</code> to create the new linked spot.</li>
+</ul>
+<p><a href="media/28-release-a.png" class="lightbox" data-gallery="quarto-lightbox-gallery-28"><img src="media/28-release-a.png" class="img-fluid"></a></p>
+<p>Check how the second spot and a link were created in the <code>TrackScheme</code> automatically.</p>
+<ul>
+<li>Continue to track the nucleus for a few more frames, until the frame immediately before division.</li>
+</ul>
+<p>Note that when clicking on a spot in the <code>BigDataViewer</code> window, the corresponding spot is highlighted in the <code>TrackScheme</code> window.</p>
+<ul>
+<li>Now click on the spots in the <code>TrackScheme</code> and see what happens to the <code>BigDataViewer</code> (nothing will happen).</li>
+</ul>
+<p>Let’s change that and link the <code>BigDataViewer</code> and <code>TrackScheme</code> windows. In the menu bar of <code>BigDataViewer</code> and <code>TrackScheme</code> windows there are lock symbols <code>1</code>, <code>2</code>, <code>3</code>.</p>
+<ul>
+<li>Click on <code>Lock 1</code> in both windows.</li>
+</ul>
+<p><a href="media/29-lock-windows.png" class="lightbox" data-gallery="quarto-lightbox-gallery-29"><img src="media/29-lock-windows.png" class="img-fluid"></a></p>
+<ul>
+<li>Now click through spots in the <code>TrackScheme</code>.</li>
+</ul>
+<p><a href="media/30-locked-behavior.png" class="lightbox" data-gallery="quarto-lightbox-gallery-30"><img src="media/30-locked-behavior.png" class="img-fluid"></a></p>
+<p>The view in the <code>BigDataViewer</code> will change to show the selected spot at the center.</p>
+<p>Before we continue tracking the cell division, let’s check one of the amazing Mastodon features.</p>
+<ul>
+<li>Click on the <code>BigDataViewer</code> button in the Mastodon project window and another <code>BigDataViewer</code> window will open.</li>
+</ul>
+<p><a href="media/31-bdv-new.png" class="lightbox" data-gallery="quarto-lightbox-gallery-31"><img src="media/31-bdv-new.png" class="img-fluid"></a></p>
+<ul>
+<li>Now activate <code>Lock 1</code> and click on one of the <code>TrackScheme</code> spots.</li>
+</ul>
+<p><a href="media/32-bdv-sync.png" class="lightbox" data-gallery="quarto-lightbox-gallery-32"><img src="media/32-bdv-sync.png" class="img-fluid"></a></p>
+<p>Both windows will be synchronized!</p>
+<p>Why is this useful for manual tracking?</p>
+<ul>
+<li>Adjust the view to center the spot in the second <code>BigDataViewer</code> window, press <code>Shift+Y</code>, and select a spot from the <code>TrackScheme</code>.</li>
+</ul>
+<p><a href="media/33-bdv-ortho.png" class="lightbox" data-gallery="quarto-lightbox-gallery-33"><img src="media/33-bdv-ortho.png" class="img-fluid"></a></p>
+<p>We can have both XY and ZY views of the same nucleus! This is great for tracking in 3D. We can check, for instance, that our spot is well centered in Z and adjust it in this window.</p>
+<p><a href="media/34-bdv-division.png" class="lightbox" data-gallery="quarto-lightbox-gallery-34"><img src="media/34-bdv-division.png" class="img-fluid"></a></p>
+<p>Continue tracking one of the daughter cells.</p>
+<ul>
+<li>Select the last spot in the <code>TrackScheme</code>, go to the XY <code>BigDataViewer</code>, hover the mouse over the circle and hold <code>A</code>, move the spot, and release <code>A</code> to add it.</li>
+<li>Do it for a few frames.</li>
+<li>Then go back to the pre-division spot and add a linked spot corresponding to the other daughter cell.</li>
+</ul>
+<p><a href="media/35-add-split.png" class="lightbox" data-gallery="quarto-lightbox-gallery-35"><img src="media/35-add-split.png" class="img-fluid"></a></p>
+<p>This will create the first branch of the lineage tree.</p>
+<ul>
+<li>Continue tracking the second daughter cell for a few frames.</li>
+</ul>
+<p><a href="media/36-track-daughter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-36"><img src="media/36-track-daughter.png" class="img-fluid"></a></p>
+<ul>
+<li>Zoom out the <code>TrackScheme</code> view to see the full branched tree.</li>
+</ul>
+<p><a href="media/37-tree-branch.png" class="lightbox" data-gallery="quarto-lightbox-gallery-37"><img src="media/37-tree-branch.png" class="img-fluid"></a></p>
+</section>
+<section id="sec-semiauto-tracking" class="level2">
+<h2 class="anchored" data-anchor-id="sec-semiauto-tracking">Semi-Automated Tracking</h2>
+<p>This mode will try to guess where the next nucleus is and automatically create the spots and links.</p>
+<ul>
+<li>To start, choose a different nucleus to track and press <code>A</code> to add a new spot.</li>
+</ul>
+<p><a href="media/38-semi-spot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-38"><img src="media/38-semi-spot.png" class="img-fluid"></a></p>
+<ul>
+<li>Now, hovering the pointer above the spot press <code>Ctrl+T</code>.</li>
+</ul>
+<p><a href="media/39-semi-auto.png" class="lightbox" data-gallery="quarto-lightbox-gallery-39"><img src="media/39-semi-auto.png" class="img-fluid"></a></p>
+<p>A lineage will appear in the <code>TrackScheme</code>.</p>
+<p>Check how accurate it is by clicking on the spots and watching their position relative to the nucleus in the <code>BigDataViewer</code> windows. Try going further with the semi-automated tracking.</p>
+<ul>
+<li>Hover a spot and press <code>Ctrl+T</code> to continue the semi-automated tracking.</li>
+</ul>
+<p><a href="media/40-semi-more.png" class="lightbox" data-gallery="quarto-lightbox-gallery-40"><img src="media/40-semi-more.png" class="img-fluid"></a></p>
+<p>See how long you can go, how it behaves with cell divisions, and which cells work well with it and which don’t. There are many parameters that can be adjusted to tweak the semi-automated tracking behavior. Please check <a href="https://mastodon.readthedocs.io/en/latest/docs/partA/semi_automated_tracking.html">Mastodon’s documentation</a> for more details.</p>
+</section>
+<section id="sec-auto-tracking" class="level2">
+<h2 class="anchored" data-anchor-id="sec-auto-tracking">Automated Tracking</h2>
+<p>The final part of this tutorial is to try automatic detection and linking of spots. This is the dream: loading data and getting out a full lineage. However, in practice, it’s a lot messier. Cleaning, fixing, and curating the data is required to get a nice informative lineage. We will use a simplified version of the protocol included in this demo dataset. It is described in the file <code>Protocol_Auto-Detection_Auto-Linking.docx</code>.</p>
+<p><a href="media/41-auto-doc.png" class="lightbox" data-gallery="quarto-lightbox-gallery-41"><img src="media/41-auto-doc.png" class="img-fluid"></a></p>
+<section id="sec-auto-detection" class="level3">
+<h3 class="anchored" data-anchor-id="sec-auto-detection">Detection</h3>
+<ul>
+<li>In the Mastodon window, go to <code>Plugins</code> &gt; <code>Tracking</code> &gt; <code>Detection...</code>.</li>
+</ul>
+<p><a href="media/42-auto-detect.png" class="lightbox" data-gallery="quarto-lightbox-gallery-42"><img src="media/42-auto-detect.png" class="img-fluid"></a></p>
+<ul>
+<li>Press <code>Next</code> twice (leave options as is).</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/43-detect-info.png" class="lightbox" data-gallery="quarto-lightbox-gallery-43"><img src="media/43-detect-info.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/44-detect-roi.png" class="lightbox" data-gallery="quarto-lightbox-gallery-44"><img src="media/44-detect-roi.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Choose <code>Advanced DoG detector</code> and press <code>Next</code>.</li>
+<li>Keep <code>Detect: bright blobs</code>.</li>
+<li>Change <code>Estimated diameter</code> to <code>35px</code>.</li>
+<li>Change <code>Quality threshold</code> to <code>100</code>.</li>
+<li>Keep <code>Behavior</code> as <code>Add</code>.</li>
+<li>Then, press <code>Next</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/45-detect-dog.png" class="lightbox" data-gallery="quarto-lightbox-gallery-45"><img src="media/45-detect-dog.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/46-detect-params.png" class="lightbox" data-gallery="quarto-lightbox-gallery-46"><img src="media/46-detect-params.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Click <code>Preview</code> and see how well the detection will work by exploring a new <code>BigDataViewer</code> window.</li>
+</ul>
+<p><a href="media/47-detect-preview.png" class="lightbox" data-gallery="quarto-lightbox-gallery-47"><img src="media/47-detect-preview.png" class="img-fluid"></a></p>
+<p>Are there too many false positives? Try changing the diameter, for example, and run the preview again to see what happens to the detected spots.</p>
+<ul>
+<li>Once satisfied, press <code>Next</code> and wait.</li>
+</ul>
+<p><a href="media/48-detect-run.png" class="lightbox" data-gallery="quarto-lightbox-gallery-48"><img src="media/48-detect-run.png" class="img-fluid"></a></p>
+<ul>
+<li>When the detection is done, press <code>Finish</code>.</li>
+</ul>
+<p><a href="media/49-detect-done.png" class="lightbox" data-gallery="quarto-lightbox-gallery-49"><img src="media/49-detect-done.png" class="img-fluid"></a></p>
+<p>The <code>BigDataViewer</code> windows and the <code>TrackScheme</code> will be showing a lot of new spots.</p>
+<ul>
+<li>Explore the spots in the <code>BigDataViewer</code> and <code>TrackScheme</code> windows.</li>
+<li>Zoom in to see the unlinked, individual spots per frame.</li>
+</ul>
+<p><a href="media/50-detect-detail.png" class="lightbox" data-gallery="quarto-lightbox-gallery-50"><img src="media/50-detect-detail.png" class="img-fluid"></a></p>
+</section>
+<section id="sec-auto-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="sec-auto-cleaning">Cleaning</h3>
+<p>Before we try to automatically link these spots, let’s remove low quality detections.</p>
+<ul>
+<li>On the Mastodon window click on <code>Table</code>, resize it to have more space, and resize the column <code>Detection q...</code> to show <code>Detection quality</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/51-table-open.png" class="lightbox" data-gallery="quarto-lightbox-gallery-51"><img src="media/51-table-open.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/52-table-resize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-52"><img src="media/52-table-resize.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Click on <code>Detection quality</code> to sort the table.</li>
+</ul>
+<p><a href="media/53-table-sort.png" class="lightbox" data-gallery="quarto-lightbox-gallery-53"><img src="media/53-table-sort.png" class="img-fluid"></a></p>
+<ul>
+<li>Click on the first row to select it. Select all rows where <code>Detection quality</code> is <code>&lt;400</code>.</li>
+<li>Then click <code>Edit</code> &gt; <code>Delete Selection</code>.</li>
+</ul>
+<p><a href="media/54-table-delete.png" class="lightbox" data-gallery="quarto-lightbox-gallery-54"><img src="media/54-table-delete.png" class="img-fluid"></a></p>
+<ul>
+<li>Close the table.</li>
+</ul>
+<p>We can also manually delete obviously wrong spots by hovering and pressing <code>D</code>.</p>
+<ul>
+<li>Give it a try by cleaning up the spots outside the embryo.</li>
+</ul>
+</section>
+<section id="sec-auto-linking" class="level3">
+<h3 class="anchored" data-anchor-id="sec-auto-linking">Linking</h3>
+<p>Now let’s try linking spots.</p>
+<ul>
+<li>In the main Mastodon window click on <code>Plugins</code> &gt; <code>Tracking</code> &gt; <code>Linking...</code>.</li>
+<li>Keep <code>All spots</code> selected for all timepoints (<code>0-29</code>) and press <code>Next</code>.</li>
+<li>Choose <code>Lap linker</code> and click <code>Next</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/55-link-timepoints.png" class="lightbox" data-gallery="quarto-lightbox-gallery-55"><img src="media/55-link-timepoints.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/56-link-lap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-56"><img src="media/56-link-lap.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>Change the parameters to:
+<ul>
+<li><code>Frame to frame linking</code>: <code>Max distance</code> to <code>40px</code>.</li>
+<li><code>Gap closing</code>: <code>Max distance</code> to <code>60px</code> (keep others as is).</li>
+<li><code>Track division</code>: Check <code>Allow track division</code>, set <code>Max distance</code> to <code>40px</code>, and press <code>+</code> to add a <code>Feature penalty</code> and set it to <code>Center ch1</code> to <code>0.3</code>.</li>
+</ul></li>
+<li>Press <code>Next</code> to start linking and wait… then press <code>Finish</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/57-link-params.png" class="lightbox" data-gallery="quarto-lightbox-gallery-57"><img src="media/57-link-params.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/58-link-finish.png" class="lightbox" data-gallery="quarto-lightbox-gallery-58"><img src="media/58-link-finish.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<p>Note that there are now tracks in the <code>BigDataViewer</code> and <code>TrackScheme</code> windows.</p>
+<ul>
+<li>Explore them a bit.</li>
+</ul>
+<p><a href="media/59-link-explore.png" class="lightbox" data-gallery="quarto-lightbox-gallery-59"><img src="media/59-link-explore.png" class="img-fluid"></a></p>
+<p>Mastodon can calculate features (position, displacement, velocity, etc.) of individual spots, links and branches. Let’s do that.</p>
+<ul>
+<li>In the main Mastodon window press <code>compute features</code>.</li>
+</ul>
+<p><a href="media/60-compute-features.png" class="lightbox" data-gallery="quarto-lightbox-gallery-60"><img src="media/60-compute-features.png" class="img-fluid"></a></p>
+<p>A Feature calculation window will open.</p>
+<ul>
+<li>Press <code>compute</code> and wait… when it’s done, close it.</li>
+</ul>
+<p><a href="media/61-computed-tracks.png" class="lightbox" data-gallery="quarto-lightbox-gallery-61"><img src="media/61-computed-tracks.png" class="img-fluid"></a></p>
+<p>Note that now the tracks in the <code>BigDataViewer</code> are showing colored links.</p>
+<ul>
+<li>Open the table window from the main window.</li>
+</ul>
+<p><a href="media/62-computed-features.png" class="lightbox" data-gallery="quarto-lightbox-gallery-62"><img src="media/62-computed-features.png" class="img-fluid"></a></p>
+<p>It’ll be filled with computed features.</p>
+</section>
+</section>
+<section id="sec-feature-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="sec-feature-visualization">Basic Feature Visualization</h2>
+<p>Finally, let’s visualize the computed features that might be interesting or useful.</p>
+<ul>
+<li>In the <code>BigDataViewer</code> window press <code>File</code> &gt; <code>Preferences</code> to open the feature color coding visualization parameters.</li>
+</ul>
+<p><a href="media/63-open-settings.png" class="lightbox" data-gallery="quarto-lightbox-gallery-63"><img src="media/63-open-settings.png" class="img-fluid"></a></p>
+<ul>
+<li>On <code>Settings</code> &gt; <code>Feature Color Modes</code> click on <code>Duplicate</code> (it’ll generate a <code>Number of links (2)</code>) and then <code>Rename</code>.</li>
+<li>Rename it to <code>Velocity</code>.</li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/64-colormode-settings.png" class="lightbox" data-gallery="quarto-lightbox-gallery-64"><img src="media/64-colormode-settings.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="media/65-colormode-duplicate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-65"><img src="media/65-colormode-duplicate.png" class="img-fluid"></a></p>
+</div>
+</div>
+</div>
+<ul>
+<li>On the <code>Coloring Spots</code> change <code>Read spot color from</code> to <code>Incoming link</code> and change <code>Feature</code> to <code>Link velocity</code>. Then click on <code>autoscale</code> in the range.</li>
+<li>On the <code>Coloring Links</code> change <code>Read link color from</code> to <code>Link</code> and change <code>Feature</code> to <code>Link velocity</code>. Then also click on <code>autoscale</code>.</li>
+<li>Click <code>Apply</code> (nothing will happen), then <code>OK</code>.</li>
+</ul>
+<p><a href="media/66-colormode-params.png" class="lightbox" data-gallery="quarto-lightbox-gallery-66"><img src="media/66-colormode-params.png" class="img-fluid"></a></p>
+<ul>
+<li>On the <code>BigDataViewer</code> window press <code>View</code> &gt; <code>Coloring</code> &gt; <code>Velocity</code>.</li>
+</ul>
+<p><a href="media/67-velocity-apply.png" class="lightbox" data-gallery="quarto-lightbox-gallery-67"><img src="media/67-velocity-apply.png" class="img-fluid"></a></p>
+<p>The spots and links in the <code>BigDataViewer</code> window will change colors.</p>
+<p><a href="media/68-velocity-colors.png" class="lightbox" data-gallery="quarto-lightbox-gallery-68"><img src="media/68-velocity-colors.png" class="img-fluid"></a></p>
+<ul>
+<li>Do the same for the other <code>BigDataViewer</code> window and the <code>TrackScheme</code>.</li>
+</ul>
+<p><a href="media/69-velocity-tracks.png" class="lightbox" data-gallery="quarto-lightbox-gallery-69"><img src="media/69-velocity-tracks.png" class="img-fluid"></a></p>
+<p>This gives a visual representation of cells which have a high displacement per frame. These might be artifacts in linking unrelated spots or, in a good processed lineage, reveal some biological process like cell migration.</p>
+</section>
+<section id="sec-graph-plotting" class="level2">
+<h2 class="anchored" data-anchor-id="sec-graph-plotting">Graph Plotting</h2>
+<p>To finalize, a simple example of plotting the lineage data.</p>
+<ul>
+<li>Click on <code>grapher</code> in the main Mastodon window, a plot window will open.</li>
+</ul>
+<p><a href="media/70-grapher-open.png" class="lightbox" data-gallery="quarto-lightbox-gallery-70"><img src="media/70-grapher-open.png" class="img-fluid"></a></p>
+<ul>
+<li>Press the <code>Lock 1</code> to lock the windows, select <code>Link velocity - outgoing</code> for X axis and <code>Detection quality</code> for Y axis and press <code>Plot</code>.</li>
+</ul>
+<p><a href="media/71-grapher-plot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-71"><img src="media/71-grapher-plot.png" class="img-fluid"></a></p>
+<ul>
+<li>Find out if the spots with the highest link velocity are properly linked or if it is an artifact.</li>
+</ul>
+<p><a href="media/72-grapher-analysis.png" class="lightbox" data-gallery="quarto-lightbox-gallery-72"><img src="media/72-grapher-analysis.png" class="img-fluid"></a></p>
+</section>
+<section id="sec-citation" class="level2">
+<h2 class="anchored" data-anchor-id="sec-citation">Citation</h2>
+<p>Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <a href="https://doi.org/10.5281/zenodo.XXXXXXXX" class="uri">https://doi.org/10.5281/zenodo.XXXXXXXX</a></p>
+</section>
+<section id="sec-license" class="level2">
+<h2 class="anchored" data-anchor-id="sec-license">License</h2>
+<p>This tutorial is available under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</section>
+<section id="sec-references" class="level2">
+<h2 class="anchored" data-anchor-id="sec-references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Girstmair2024-iv" class="csl-entry" role="listitem">
+Girstmair, Johannes. 2024. <em>Mastodon Auto-Tracking Demo on <span><em>Parhyale Hawaiensis</em></span> Limb Development</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.13944688">https://doi.org/10.5281/ZENODO.13944688</a>.
+</div>
+<div id="ref-Girstmair2025-qd" class="csl-entry" role="listitem">
+Girstmair, Johannes, Tobias Pietzsch, Vladimir Ulman, Stefan Hahmann, Matthias Arzt, Mette Handberg-Thorsager, Ko Sugawara, et al. 2025. <span>“Mastodon: The Command Center for Large-Scale Lineage-Tracing Microscopy Datasets.”</span> <em>bioRxiv</em>, December, 2025.12.10.693416. <a href="https://doi.org/10.64898/2025.12.10.693416">https://doi.org/10.64898/2025.12.10.693416</a>.
+</div>
+<div id="ref-Schindelin2012-di" class="csl-entry" role="listitem">
+Schindelin, Johannes, Ignacio Arganda-Carreras, Erwin Frise, Verena Kaynig, Mark Longair, Tobias Pietzsch, Stephan Preibisch, et al. 2012. <span>“Fiji: An Open-Source Platform for Biological-Image Analysis.”</span> <em>Nat. Methods</em> 9 (June): 676–82. <a href="https://doi.org/10.1038/nmeth.2019">https://doi.org/10.1038/nmeth.2019</a>.
+</div>
+<div id="ref-Wolff2018-fr" class="csl-entry" role="listitem">
+Wolff, Carsten, Jean-Yves Tinevez, Tobias Pietzsch, Evangelia Stamataki, Benjamin Harich, Léo Guignard, Stephan Preibisch, et al. 2018. <span>“Multi-View Light-Sheet Imaging and Tracking with the MaMuT Software Reveals the Cell Lineage of a Direct Developing Arthropod Limb.”</span> <em>Elife</em> 7 (March). <a href="https://doi.org/10.7554/eLife.34410">https://doi.org/10.7554/eLife.34410</a>.
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
