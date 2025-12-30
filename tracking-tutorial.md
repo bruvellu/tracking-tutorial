@@ -1,15 +1,15 @@
 ---
-title: Cell tracking using Mastodon
+title: Cell tracking in Fiji using Mastodon
 author: Bruno C. Vellutini
-date: 29 December 2025
+date: 05 January 2026
 date-format: long
 created: 15 December 2025
 modified: today
-toc: true
-toc-depth: 3
-bibliography: references.bib
 lang: en
 format: html
+toc: true
+toc-depth: 4
+bibliography: references.bib
 lightbox: true
 link-citations: true
 colorlinks: true
@@ -474,6 +474,14 @@ To finalize, a simple example of plotting the lineage data.
 - Find out if the spots with the highest link velocity are properly linked or if it is an artifact.
 
 ![](media/72-grapher-analysis.png)
+
+## Citation {#sec-citation}
+
+Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <https://doi.org/10.5281/zenodo.XXXXXXXX>
+
+## License {#sec-license}
+
+This tutorial is available under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
 ## References {#sec-references}
 
