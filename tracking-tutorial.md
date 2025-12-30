@@ -477,7 +477,7 @@ To finalize, a simple example of plotting the lineage data.
 
 ## Citation {#sec-citation}
 
-Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <https://doi.org/10.5281/zenodo.XXXXXXXX>
+Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <https://doi.org/10.5281/zenodo.18090897>
 
 ## License {#sec-license}
 

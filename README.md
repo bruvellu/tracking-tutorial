@@ -8,13 +8,13 @@ The tutorial is available online at [bruvellu.github.io/tracking-tutorial](https
 
 ### Offline usage
 
-- Download the latest archive from GitHub ([here](https://github.com/bruvellu/tracking-tutorial/archive/refs/heads/main.zip)) or Zenodo ([here](https://doi.org/10.5281/zenodo.XXXXXXXXX))
+- Download the latest archive from GitHub ([here](https://github.com/bruvellu/tracking-tutorial/archive/refs/heads/main.zip)) or Zenodo ([here](https://doi.org/10.5281/zenodo.18090897))
 - Unzip the archive in your working directory
 - Open the file `tracking-tutorial.html` on your browser
 
 ## Citation
 
-Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <https://doi.org/10.5281/zenodo.XXXXXXXX>
+Vellutini, B. C. (2026). Cell tracking in Fiji using Mastodon. Zenodo. <https://doi.org/10.5281/zenodo.18090897>
 
 ## License
 
